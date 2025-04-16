@@ -239,31 +239,51 @@ private fun TasksContentPreview() {
                         title = "Title 1",
                         description = "Description 1",
                         isCompleted = false,
-                        id = "ID 1"
+                        id = "ID 1",
+                        conductivity = TODO(),
+                        densityAndHeatCapacity = TODO(),
+                        geometryFile = TODO(),
+                        surfaceTempFile = TODO()
                     ),
                     Task(
                         title = "Title 2",
                         description = "Description 2",
                         isCompleted = true,
-                        id = "ID 2"
+                        id = "ID 2",
+                        conductivity = TODO(),
+                        densityAndHeatCapacity = TODO(),
+                        geometryFile = TODO(),
+                        surfaceTempFile = TODO()
                     ),
                     Task(
                         title = "Title 3",
                         description = "Description 3",
                         isCompleted = true,
-                        id = "ID 3"
+                        id = "ID 3",
+                        conductivity = TODO(),
+                        densityAndHeatCapacity = TODO(),
+                        geometryFile = TODO(),
+                        surfaceTempFile = TODO()
                     ),
                     Task(
                         title = "Title 4",
                         description = "Description 4",
                         isCompleted = false,
-                        id = "ID 4"
+                        id = "ID 4",
+                        conductivity = TODO(),
+                        densityAndHeatCapacity = TODO(),
+                        geometryFile = TODO(),
+                        surfaceTempFile = TODO()
                     ),
                     Task(
                         title = "Title 5",
                         description = "Description 5",
                         isCompleted = true,
-                        id = "ID 5"
+                        id = "ID 5",
+                        conductivity = TODO(),
+                        densityAndHeatCapacity = TODO(),
+                        geometryFile = TODO(),
+                        surfaceTempFile = TODO()
                     ),
                 ),
                 currentFilteringLabel = R.string.label_all,
@@ -318,7 +338,12 @@ private fun TaskItemPreview() {
                 task = Task(
                     title = "Title",
                     description = "Description",
-                    id = "ID"
+                    id = "ID",
+                    conductivity = TODO(),
+                    densityAndHeatCapacity = TODO(),
+                    geometryFile = TODO(),
+                    surfaceTempFile = TODO(),
+                    isCompleted = TODO()
                 ),
                 onTaskClick = { },
                 onCheckedChange = { }
@@ -337,7 +362,11 @@ private fun TaskItemCompletedPreview() {
                     title = "Title",
                     description = "Description",
                     isCompleted = true,
-                    id = "ID"
+                    id = "ID",
+                    conductivity = TODO(),
+                    densityAndHeatCapacity = TODO(),
+                    geometryFile = TODO(),
+                    surfaceTempFile = TODO()
                 ),
                 onTaskClick = { },
                 onCheckedChange = { }

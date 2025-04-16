@@ -30,6 +30,10 @@ package com.example.android.architecture.blueprints.todoapp.data
 data class Task(
     val title: String = "",
     val description: String = "",
+    val conductivity: Double,
+    val densityAndHeatCapacity: Double,
+    val geometryFile: String?,         // New field
+    val surfaceTempFile: String?,      // New field
     val isCompleted: Boolean = false,
     val id: String,
 ) {

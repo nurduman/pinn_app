@@ -48,7 +48,7 @@ class DefaultTaskRepository @Inject constructor(
     @ApplicationScope private val scope: CoroutineScope,
 ) : TaskRepository {
 
-    override suspend fun createTask(title: String, description: String): String {
+    override suspend fun createTask(title: String, description: String, conductivity: Double, densityAndHeatCapacity: Double, geometryFile: String, surfaceTempFile: String): String {
         // ID creation might be a complex operation so it's executed using the supplied
         // coroutine dispatcher
         val taskId = withContext(dispatcher) {
@@ -58,13 +58,17 @@ class DefaultTaskRepository @Inject constructor(
             title = title,
             description = description,
             id = taskId,
+            conductivity = conductivity,
+            densityAndHeatCapacity = densityAndHeatCapacity,
+            geometryFile = geometryFile,
+            surfaceTempFile = surfaceTempFile
         )
         localDataSource.upsert(task.toLocal())
         saveTasksToNetwork()
         return taskId
     }
 
-    override suspend fun updateTask(taskId: String, title: String, description: String) {
+    override suspend fun updateTask(taskId: String, title: String, description: String, conductivity: Double, densityAndHeatCapacity: Double, geometryFile: String, surfaceTempFile: String) {
         val task = getTask(taskId)?.copy(
             title = title,
             description = description

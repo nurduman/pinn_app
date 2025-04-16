@@ -18,14 +18,22 @@ package com.example.android.architecture.blueprints.todoapp.data.source.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 
 /**
  * The Room Database that contains the Task table.
  *
  * Note that exportSchema should be true in production databases.
  */
-@Database(entities = [LocalTask::class], version = 1, exportSchema = false)
+@Database(entities = [LocalTask::class], version = 3) // Increment version
 abstract class ToDoDatabase : RoomDatabase() {
-
     abstract fun taskDao(): TaskDao
+}
+
+val MIGRATION_2_3 = object : Migration(2, 3) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("ALTER TABLE tasks ADD COLUMN geometryFile TEXT")
+        database.execSQL("ALTER TABLE tasks ADD COLUMN surfaceTempFile TEXT")
+    }
 }

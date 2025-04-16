@@ -15,10 +15,10 @@
      limitations under the License.
 -->
 <resources>
-    <string name="app_name">Todo</string>
+    <string name="app_name">Medical Infrared Imaging</string>
     <string name="add_task">New Task</string>
     <string name="edit_task">Edit Task</string>
-    <string name="task_details">Task Details</string>
+    <string name="task_details">Simulation Details</string>
     <string name="task_marked_complete">Task marked complete</string>
     <string name="task_marked_active">Task marked active</string>
     <string name="loading_tasks_error">Error while loading tasks</string>
@@ -31,9 +31,13 @@
     <string name="menu_clear">Clear completed</string>
     <string name="menu_delete_task">Delete task</string>
     <string name="menu_more">More</string>
-    <string name="navigation_view_header_title">Todo</string>
+    <string name="geometry_file_label">Geometry File</string>
+    <string name="surface_temp_file_label">Surface Temp File</string>
+    <string name="navigation_view_header_title">Medical Infrared Imaging</string>
     <string name="title_hint">Title</string>
-    <string name="description_hint">Enter your task here.</string>
+    <string name="description_hint">Enter input parameters</string>
+    <string name="conductivity_hint">Conductivity should be bigger than 0</string>
+    <string name="density_and_heat_capacity_hint">This value should be bigger than 0</string>
     <string name="cd_save_task">Save task</string>
     <string name="empty_task_message">Tasks cannot be empty</string>
     <string name="successfully_saved_task_message">Task saved</string>

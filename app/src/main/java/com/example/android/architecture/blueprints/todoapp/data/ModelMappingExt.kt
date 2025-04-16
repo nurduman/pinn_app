@@ -49,7 +49,11 @@ fun LocalTask.toExternal() = Task(
     id = id,
     title = title,
     description = description,
+    conductivity = TODO(),
     isCompleted = isCompleted,
+    densityAndHeatCapacity = TODO(),
+    geometryFile = TODO(),
+    surfaceTempFile = TODO(),
 )
 
 // Note: JvmName is used to provide a unique name for each extension function with the same name.

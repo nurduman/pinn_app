@@ -36,6 +36,10 @@ import javax.inject.Inject
 data class AddEditTaskUiState(
     val title: String = "",
     val description: String = "",
+    val conductivity: Double = 0.0,
+    val densityAndHeatCapacity: Double = 0.0,
+    val geometryFile: String? = null,         // New field for geometry file URI
+    val surfaceTempFile: String? = null,
     val isTaskCompleted: Boolean = false,
     val isLoading: Boolean = false,
     val userMessage: Int? = null,
@@ -99,8 +103,43 @@ class AddEditTaskViewModel @Inject constructor(
         }
     }
 
+    fun updateConductivity(newConductivity: Double) {
+        _uiState.update {
+            it.copy(conductivity = newConductivity)
+        }
+    }
+
+    fun updateDensityAndHeatCapacity(newDensityAndHestCapacity: Double) {
+        _uiState.update {
+            it.copy(densityAndHeatCapacity = newDensityAndHestCapacity)
+        }
+    }
+
+    fun updateGeometryFile(newGeometryFile: String?) {
+        _uiState.update {
+            it.copy(geometryFile = newGeometryFile)
+        }
+    }
+
+    fun updateSurfaceTempFile(newSurfaceTempFile: String?) {
+        _uiState.update {
+            it.copy(surfaceTempFile = newSurfaceTempFile)
+        }
+    }
+
     private fun createNewTask() = viewModelScope.launch {
-        taskRepository.createTask(uiState.value.title, uiState.value.description)
+        uiState.value.geometryFile?.let {
+            uiState.value.surfaceTempFile?.let { it1 ->
+                taskRepository.createTask(
+                    title = uiState.value.title,
+                    description = uiState.value.description,
+                    conductivity = uiState.value.conductivity,
+                    densityAndHeatCapacity = uiState.value.densityAndHeatCapacity,
+                    geometryFile = it,
+                    surfaceTempFile = it1
+                )
+            }
+        }
         _uiState.update {
             it.copy(isTaskSaved = true)
         }
@@ -111,11 +150,19 @@ class AddEditTaskViewModel @Inject constructor(
             throw RuntimeException("updateTask() was called but task is new.")
         }
         viewModelScope.launch {
-            taskRepository.updateTask(
-                taskId,
-                title = uiState.value.title,
-                description = uiState.value.description,
-            )
+            uiState.value.geometryFile?.let {
+                uiState.value.surfaceTempFile?.let { it1 ->
+                    taskRepository.updateTask(
+                        taskId = taskId,
+                        title = uiState.value.title,
+                        description = uiState.value.description,
+                        conductivity = uiState.value.conductivity,
+                        densityAndHeatCapacity = uiState.value.densityAndHeatCapacity,
+                        geometryFile = it,
+                        surfaceTempFile = it1
+                    )
+                }
+            }
             _uiState.update {
                 it.copy(isTaskSaved = true)
             }
@@ -133,6 +180,10 @@ class AddEditTaskViewModel @Inject constructor(
                         it.copy(
                             title = task.title,
                             description = task.description,
+                            conductivity = task.conductivity,
+                            densityAndHeatCapacity = task.densityAndHeatCapacity,
+                            geometryFile = task.geometryFile,
+                            surfaceTempFile = task.surfaceTempFile,
                             isTaskCompleted = task.isCompleted,
                             isLoading = false
                         )
