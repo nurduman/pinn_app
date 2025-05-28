@@ -241,7 +241,8 @@ private fun TasksContentPreview() {
                         isCompleted = false,
                         id = "ID 1",
                         conductivity = TODO(),
-                        densityAndHeatCapacity = TODO(),
+                        radius = TODO(),
+                        depth = TODO(),
                         geometryFile = TODO(),
                         surfaceTempFile = TODO()
                     ),
@@ -251,7 +252,8 @@ private fun TasksContentPreview() {
                         isCompleted = true,
                         id = "ID 2",
                         conductivity = TODO(),
-                        densityAndHeatCapacity = TODO(),
+                        radius = TODO(),
+                        depth = TODO(),
                         geometryFile = TODO(),
                         surfaceTempFile = TODO()
                     ),
@@ -261,7 +263,8 @@ private fun TasksContentPreview() {
                         isCompleted = true,
                         id = "ID 3",
                         conductivity = TODO(),
-                        densityAndHeatCapacity = TODO(),
+                        radius = TODO(),
+                        depth = TODO(),
                         geometryFile = TODO(),
                         surfaceTempFile = TODO()
                     ),
@@ -271,7 +274,8 @@ private fun TasksContentPreview() {
                         isCompleted = false,
                         id = "ID 4",
                         conductivity = TODO(),
-                        densityAndHeatCapacity = TODO(),
+                        radius = TODO(),
+                        depth = TODO(),
                         geometryFile = TODO(),
                         surfaceTempFile = TODO()
                     ),
@@ -281,7 +285,8 @@ private fun TasksContentPreview() {
                         isCompleted = true,
                         id = "ID 5",
                         conductivity = TODO(),
-                        densityAndHeatCapacity = TODO(),
+                        radius = TODO(),
+                        depth = TODO(),
                         geometryFile = TODO(),
                         surfaceTempFile = TODO()
                     ),
@@ -340,7 +345,8 @@ private fun TaskItemPreview() {
                     description = "Description",
                     id = "ID",
                     conductivity = TODO(),
-                    densityAndHeatCapacity = TODO(),
+                    radius = TODO(),
+                        depth = TODO(),
                     geometryFile = TODO(),
                     surfaceTempFile = TODO(),
                     isCompleted = TODO()
@@ -363,10 +369,11 @@ private fun TaskItemCompletedPreview() {
                     description = "Description",
                     isCompleted = true,
                     id = "ID",
-                    conductivity = TODO(),
-                    densityAndHeatCapacity = TODO(),
-                    geometryFile = TODO(),
-                    surfaceTempFile = TODO()
+                    conductivity = 0.0,
+                    radius = 0.0,
+                    depth = 0.0,
+                    geometryFile = "geometry",
+                    surfaceTempFile = "surface"
                 ),
                 onTaskClick = { },
                 onCheckedChange = { }

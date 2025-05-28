@@ -31,7 +31,8 @@ data class Task(
     val title: String = "",
     val description: String = "",
     val conductivity: Double,
-    val densityAndHeatCapacity: Double,
+    val depth: Double,
+    val radius: Double,
     val geometryFile: String?,         // New field
     val surfaceTempFile: String?,      // New field
     val isCompleted: Boolean = false,

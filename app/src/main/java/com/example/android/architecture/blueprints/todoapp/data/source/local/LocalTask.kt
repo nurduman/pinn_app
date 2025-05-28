@@ -34,4 +34,9 @@ data class LocalTask(
     var title: String,
     var description: String,
     var isCompleted: Boolean,
+    val conductivity: Double,
+    val radius: Double,         // New field
+    val depth: Double,          // New field
+    val geometryFile: String?,         // New field
+    val surfaceTempFile: String?,      // New field
 )

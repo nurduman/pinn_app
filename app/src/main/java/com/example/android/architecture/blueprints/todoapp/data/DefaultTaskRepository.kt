@@ -48,9 +48,15 @@ class DefaultTaskRepository @Inject constructor(
     @ApplicationScope private val scope: CoroutineScope,
 ) : TaskRepository {
 
-    override suspend fun createTask(title: String, description: String, conductivity: Double, densityAndHeatCapacity: Double, geometryFile: String, surfaceTempFile: String): String {
-        // ID creation might be a complex operation so it's executed using the supplied
-        // coroutine dispatcher
+    override suspend fun createTask(
+        title: String,
+        description: String,
+        conductivity: Double,
+        radius: Double,
+        depth: Double,
+        geometryFile: String,  // Change to String?
+        surfaceTempFile: String // Change to String?
+    ): String {
         val taskId = withContext(dispatcher) {
             UUID.randomUUID().toString()
         }
@@ -59,7 +65,8 @@ class DefaultTaskRepository @Inject constructor(
             description = description,
             id = taskId,
             conductivity = conductivity,
-            densityAndHeatCapacity = densityAndHeatCapacity,
+            radius = radius,
+            depth = depth,
             geometryFile = geometryFile,
             surfaceTempFile = surfaceTempFile
         )
@@ -68,10 +75,22 @@ class DefaultTaskRepository @Inject constructor(
         return taskId
     }
 
-    override suspend fun updateTask(taskId: String, title: String, description: String, conductivity: Double, densityAndHeatCapacity: Double, geometryFile: String, surfaceTempFile: String) {
+    override suspend fun updateTask(
+        taskId: String,
+        title: String,
+        description: String,
+        conductivity: Double,
+        radius: Double,
+        depth: Double,
+        geometryFile: String,  // Change to String?
+        surfaceTempFile: String // Change to String?
+    ) {
         val task = getTask(taskId)?.copy(
             title = title,
-            description = description
+            description = description,
+            conductivity = conductivity,           // Add missing field
+            geometryFile = geometryFile,           // Add missing field
+            surfaceTempFile = surfaceTempFile      // Add missing field
         ) ?: throw Exception("Task (id $taskId) not found")
 
         localDataSource.upsert(task.toLocal())

@@ -56,13 +56,28 @@ class FakeTaskRepository : TaskRepository {
         refresh()
     }
 
-    override suspend fun createTask(title: String, description: String): String {
+    override suspend fun createTask(
+        title: String,
+        description: String,
+        conductivity: Double,
+        densityAndHeatCapacity: Double,
+        geometryFile: String,
+        surfaceTempFile: String
+    ): String {
         val taskId = generateTaskId()
-        Task(title = title, description = description, id = taskId).also {
+        Task(
+            title = title, description = description, id = taskId,
+            conductivity = TODO(),
+            densityAndHeatCapacity = TODO(),
+            geometryFile = TODO(),
+            surfaceTempFile = TODO(),
+            isCompleted = TODO()
+        ).also {
             saveTask(it)
         }
         return taskId
     }
+
 
     override fun getTasksStream(): Flow<List<Task>> = observableTasks
 
@@ -86,7 +101,15 @@ class FakeTaskRepository : TaskRepository {
         return observableTasks.first()
     }
 
-    override suspend fun updateTask(taskId: String, title: String, description: String) {
+    override suspend fun updateTask(
+        taskId: String,
+        title: String,
+        description: String,
+        conductivity: Double,
+        densityAndHeatCapacity: Double,
+        geometryFile: String,
+        surfaceTempFile: String
+    ) {
         val updatedTask = _savedTasks.value[taskId]?.copy(
             title = title,
             description = description

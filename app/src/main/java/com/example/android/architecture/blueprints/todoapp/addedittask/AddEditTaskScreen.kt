@@ -91,16 +91,18 @@ fun AddEditTaskScreen(
             title = uiState.title,
             description = uiState.description,
             conductivity = uiState.conductivity,
-            densityAndHeatCapacity = uiState.densityAndHeatCapacity,
+            radius = uiState.radius,
+            depth = uiState.depth,
             geometryFile = uiState.geometryFile,                     // Pass new field
             surfaceTempFile = uiState.surfaceTempFile,
             onTitleChanged = viewModel::updateTitle,
             onDescriptionChanged = viewModel::updateDescription,
             onConductivityChanged = viewModel::updateConductivity,
-            onDensityAndHeatCapacityChanged = viewModel::updateDensityAndHeatCapacity,
             onGeometryFileChanged = viewModel::updateGeometryFile,   // Pass new update function
             onSurfaceTempFileChanged = viewModel::updateSurfaceTempFile, // Pass new update function
-            modifier = Modifier.padding(paddingValues)
+            modifier = Modifier.padding(paddingValues),
+            onRadiusChanged = viewModel::updateRadius,
+            onDepthChanged = viewModel::updateDepth
         )
 
         // Check if the task is saved and call onTaskUpdate event
@@ -126,14 +128,16 @@ private fun AddEditTaskContent(
     loading: Boolean,
     title: String,
     description: String,
-    conductivity: Double,                     // New parameter
-    densityAndHeatCapacity: Double,           // New parameter
+    conductivity: Double,
+    radius: Double,
+    depth: Double,// New parameter
     geometryFile: String?,                     // New parameter
     surfaceTempFile: String?,
     onTitleChanged: (String) -> Unit,
     onDescriptionChanged: (String) -> Unit,
-    onConductivityChanged: (Double) -> Unit,  // New parameter
-    onDensityAndHeatCapacityChanged: (Double) -> Unit, // New parameter
+    onConductivityChanged: (Double) -> Unit,
+    onRadiusChanged: (Double) -> Unit,
+    onDepthChanged: (Double) -> Unit,// New parameter
     onGeometryFileChanged: (String?) -> Unit,  // New parameter
     onSurfaceTempFileChanged: (String?) -> Unit, // New parameter
     modifier: Modifier = Modifier
@@ -186,7 +190,7 @@ private fun AddEditTaskContent(
                 onValueChange = onDescriptionChanged,
                 placeholder = { Text(stringResource(id = R.string.description_hint)) },
                 modifier = Modifier
-                    .height(350.dp)
+                    .height(100.dp)
                     .fillMaxWidth(),
                 colors = textFieldColors
             )
@@ -205,15 +209,31 @@ private fun AddEditTaskContent(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
 
-            // Density and Heat Capacity Field
+            // Radius Field
             OutlinedTextField(
-                value = densityAndHeatCapacity.toString(),
+                value = radius.toString(),
                 onValueChange = { newValue ->
                     val doubleValue = newValue.toDoubleOrNull() ?: 0.0
-                    onDensityAndHeatCapacityChanged(doubleValue)
+                    onRadiusChanged(doubleValue)
                 },
-                label = { Text("Density and Heat Capacity") },
-                placeholder = { Text(stringResource(id = R.string.density_and_heat_capacity_hint))  },
+                label = { Text("Radius") },
+                placeholder = { Text(stringResource(id = R.string.radius_hint))  },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
+                colors = textFieldColors,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            )
+
+            // Radius Field
+            OutlinedTextField(
+                value = depth.toString(),
+                onValueChange = { newValue ->
+                    val doubleValue = newValue.toDoubleOrNull() ?: 0.0
+                    onDepthChanged(doubleValue)
+                },
+                label = { Text("Depth") },
+                placeholder = { Text(stringResource(id = R.string.depth_hint))  },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp),

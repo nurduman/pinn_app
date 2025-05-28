@@ -37,8 +37,10 @@
     <string name="title_hint">Title</string>
     <string name="description_hint">Enter input parameters</string>
     <string name="conductivity_hint">Conductivity should be bigger than 0</string>
-    <string name="density_and_heat_capacity_hint">This value should be bigger than 0</string>
-    <string name="cd_save_task">Save task</string>
+    <string name="radius_label">Radius</string>
+    <string name="radius_hint">Enter radius (e.g., 1.0)</string>
+    <string name="depth_label">Depth</string>
+    <string name="depth_hint">Enter depth (e.g., 2.5)</string>    <string name="cd_save_task">Save task</string>
     <string name="empty_task_message">Tasks cannot be empty</string>
     <string name="successfully_saved_task_message">Task saved</string>
     <string name="list_title">Task List</string>

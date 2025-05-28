@@ -20,6 +20,9 @@ import android.content.Context
 import androidx.room.Room
 import com.example.android.architecture.blueprints.todoapp.data.DefaultTaskRepository
 import com.example.android.architecture.blueprints.todoapp.data.TaskRepository
+import com.example.android.architecture.blueprints.todoapp.data.source.local.MIGRATION_1_2
+import com.example.android.architecture.blueprints.todoapp.data.source.local.MIGRATION_2_3
+import com.example.android.architecture.blueprints.todoapp.data.source.local.MIGRATION_3_4
 import com.example.android.architecture.blueprints.todoapp.data.source.local.TaskDao
 import com.example.android.architecture.blueprints.todoapp.data.source.local.ToDoDatabase
 import com.example.android.architecture.blueprints.todoapp.data.source.network.NetworkDataSource
@@ -61,7 +64,9 @@ object DatabaseModule {
             context.applicationContext,
             ToDoDatabase::class.java,
             "Tasks.db"
-        ).build()
+        )
+            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
+            .build()
     }
 
     @Provides

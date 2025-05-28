@@ -37,7 +37,8 @@ data class AddEditTaskUiState(
     val title: String = "",
     val description: String = "",
     val conductivity: Double = 0.0,
-    val densityAndHeatCapacity: Double = 0.0,
+    val radius: Double = 0.0,
+    val depth: Double = 0.0,
     val geometryFile: String? = null,         // New field for geometry file URI
     val surfaceTempFile: String? = null,
     val isTaskCompleted: Boolean = false,
@@ -109,11 +110,18 @@ class AddEditTaskViewModel @Inject constructor(
         }
     }
 
-    fun updateDensityAndHeatCapacity(newDensityAndHestCapacity: Double) {
+    fun updateRadius(newRadius: Double) {
         _uiState.update {
-            it.copy(densityAndHeatCapacity = newDensityAndHestCapacity)
+            it.copy(radius = newRadius)
         }
     }
+
+    fun updateDepth(newDepth: Double) {
+        _uiState.update {
+            it.copy(depth = newDepth)
+        }
+    }
+
 
     fun updateGeometryFile(newGeometryFile: String?) {
         _uiState.update {
@@ -134,7 +142,8 @@ class AddEditTaskViewModel @Inject constructor(
                     title = uiState.value.title,
                     description = uiState.value.description,
                     conductivity = uiState.value.conductivity,
-                    densityAndHeatCapacity = uiState.value.densityAndHeatCapacity,
+                    radius = uiState.value.radius,
+                    depth = uiState.value.depth,
                     geometryFile = it,
                     surfaceTempFile = it1
                 )
@@ -157,7 +166,8 @@ class AddEditTaskViewModel @Inject constructor(
                         title = uiState.value.title,
                         description = uiState.value.description,
                         conductivity = uiState.value.conductivity,
-                        densityAndHeatCapacity = uiState.value.densityAndHeatCapacity,
+                        radius = uiState.value.radius,
+                        depth = uiState.value.depth,
                         geometryFile = it,
                         surfaceTempFile = it1
                     )
@@ -181,7 +191,8 @@ class AddEditTaskViewModel @Inject constructor(
                             title = task.title,
                             description = task.description,
                             conductivity = task.conductivity,
-                            densityAndHeatCapacity = task.densityAndHeatCapacity,
+                            radius = task.radius,
+                            depth = task.depth,
                             geometryFile = task.geometryFile,
                             surfaceTempFile = task.surfaceTempFile,
                             isTaskCompleted = task.isCompleted,

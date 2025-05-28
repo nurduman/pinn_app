@@ -35,9 +35,11 @@ interface TaskRepository {
 
     suspend fun refreshTask(taskId: String)
 
-    suspend fun createTask(title: String, description: String, conductivity: Double, densityAndHeatCapacity: Double, geometryFile: String, surfaceTempFile: String): String
+    suspend fun createTask(title: String, description: String, conductivity: Double, radius: Double,         // New field
+                           depth: Double, geometryFile: String, surfaceTempFile: String): String
 
-    suspend fun updateTask(taskId: String, title: String, description: String, conductivity: Double, densityAndHeatCapacity: Double, geometryFile: String, surfaceTempFile: String)
+    suspend fun updateTask(taskId: String, title: String, description: String, conductivity: Double, radius: Double,         // New field
+                           depth: Double, geometryFile: String, surfaceTempFile: String)
 
     suspend fun completeTask(taskId: String)
 

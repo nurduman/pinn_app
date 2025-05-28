@@ -157,10 +157,11 @@ private fun EditTaskContentPreview() {
                 description = "Description",
                 isCompleted = false,
                 id = "ID",
-                conductivity = TODO(),
-                densityAndHeatCapacity = TODO(),
-                geometryFile = TODO(),
-                surfaceTempFile = TODO()
+                conductivity = 2.0,
+                radius = 2.0,
+                depth = 2.0,
+                geometryFile = "geometry_edit",
+                surfaceTempFile = "surface_temp_edit"
             ),
             onTaskCheck = { },
             onRefresh = { }
@@ -181,10 +182,11 @@ private fun EditTaskContentTaskCompletedPreview() {
                 description = "Description",
                 isCompleted = false,
                 id = "ID",
-                conductivity = TODO(),
-                densityAndHeatCapacity = TODO(),
-                geometryFile = TODO(),
-                surfaceTempFile = TODO()
+                conductivity = 3.0,
+                radius = 2.0,
+                depth = 2.0,
+                geometryFile = "geometry_edit",
+                surfaceTempFile = "surface_temp_edit"
             ),
             onTaskCheck = { },
             onRefresh = { }
@@ -204,10 +206,11 @@ private fun EditTaskContentEmptyPreview() {
                 description = "Description",
                 isCompleted = false,
                 id = "ID",
-                conductivity = TODO(),
-                densityAndHeatCapacity = TODO(),
-                geometryFile = TODO(),
-                surfaceTempFile = TODO()
+                conductivity = 0.0,
+                radius = 2.0,
+                depth = 2.0,
+                geometryFile = "geometry",
+                surfaceTempFile = "surface"
             ),
             onTaskCheck = { },
             onRefresh = { }

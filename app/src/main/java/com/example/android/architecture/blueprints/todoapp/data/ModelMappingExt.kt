@@ -40,21 +40,30 @@ fun Task.toLocal() = LocalTask(
     title = title,
     description = description,
     isCompleted = isCompleted,
+    conductivity = conductivity,
+    radius = radius,
+    depth = depth,
+    geometryFile = geometryFile,
+    surfaceTempFile = surfaceTempFile,
 )
 
 fun List<Task>.toLocal() = map(Task::toLocal)
 
 // Local to External
-fun LocalTask.toExternal() = Task(
-    id = id,
-    title = title,
-    description = description,
-    conductivity = TODO(),
-    isCompleted = isCompleted,
-    densityAndHeatCapacity = TODO(),
-    geometryFile = TODO(),
-    surfaceTempFile = TODO(),
-)
+fun LocalTask.toExternal(): Task {
+
+    return Task(
+        id = id,
+        title = title,
+        description = description,
+        conductivity = conductivity,
+        radius = radius,
+        depth = depth,
+        isCompleted = isCompleted,
+        geometryFile = geometryFile,
+        surfaceTempFile = surfaceTempFile,
+    )
+}
 
 // Note: JvmName is used to provide a unique name for each extension function with the same name.
 // Without this, type erasure will cause compiler errors because these methods will have the same
@@ -68,6 +77,11 @@ fun NetworkTask.toLocal() = LocalTask(
     title = title,
     description = shortDescription,
     isCompleted = (status == TaskStatus.COMPLETE),
+    geometryFile = geometryFile,
+    surfaceTempFile = surfaceTempFile,
+    conductivity = TODO(),
+    radius = TODO(),
+    depth = TODO()
 )
 
 @JvmName("networkToLocal")
