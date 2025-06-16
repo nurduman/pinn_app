@@ -23,6 +23,9 @@ import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.TodoDestinationsArgs
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.TaskRepository
+import com.example.android.architecture.blueprints.todoapp.network.PinnApiClient
+import com.example.android.architecture.blueprints.todoapp.network.PinnOutput
+import com.example.android.architecture.blueprints.todoapp.network.PinnResponse
 import com.example.android.architecture.blueprints.todoapp.util.Async
 import com.example.android.architecture.blueprints.todoapp.util.WhileUiSubscribed
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,6 +36,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 /**
@@ -42,7 +46,9 @@ data class TaskDetailUiState(
     val task: Task? = null,
     val isLoading: Boolean = false,
     val userMessage: Int? = null,
-    val isTaskDeleted: Boolean = false
+    val isTaskDeleted: Boolean = false,
+    val sendToPinnTriggered: Boolean = false,
+    val optimizedOutput: PinnOutput? = null // New state for optimized values
 )
 
 /**
@@ -59,13 +65,22 @@ class TaskDetailViewModel @Inject constructor(
     private val _userMessage: MutableStateFlow<Int?> = MutableStateFlow(null)
     private val _isLoading = MutableStateFlow(false)
     private val _isTaskDeleted = MutableStateFlow(false)
+    private val _sendToPinnTriggered = MutableStateFlow(false)
+    private val _optimizedOutput = MutableStateFlow<PinnOutput?>(null) // New state
     private val _taskAsync = taskRepository.getTaskStream(taskId)
         .map { handleTask(it) }
         .catch { emit(Async.Error(R.string.loading_task_error)) }
 
     val uiState: StateFlow<TaskDetailUiState> = combine(
-        _userMessage, _isLoading, _isTaskDeleted, _taskAsync
-    ) { userMessage, isLoading, isTaskDeleted, taskAsync ->
+        _userMessage, _isLoading, _isTaskDeleted, _sendToPinnTriggered, _taskAsync, _optimizedOutput
+    ) { flows ->
+        val userMessage = flows[0] as Int?
+        val isLoading = flows[1] as Boolean
+        val isTaskDeleted = flows[2] as Boolean
+        val sendToPinnTriggered = flows[3] as Boolean
+        val taskAsync = flows[4] as Async<Task?>
+        val optimizedOutput = flows[5] as PinnOutput?
+
         when (taskAsync) {
             Async.Loading -> {
                 TaskDetailUiState(isLoading = true)
@@ -81,7 +96,9 @@ class TaskDetailViewModel @Inject constructor(
                     task = taskAsync.data,
                     isLoading = isLoading,
                     userMessage = userMessage,
-                    isTaskDeleted = isTaskDeleted
+                    isTaskDeleted = isTaskDeleted,
+                    sendToPinnTriggered = sendToPinnTriggered,
+                    optimizedOutput = optimizedOutput
                 )
             }
         }
@@ -118,6 +135,43 @@ class TaskDetailViewModel @Inject constructor(
 
     fun snackbarMessageShown() {
         _userMessage.value = null
+    }
+
+    fun sendToPinn() {
+        val task = uiState.value.task ?: return
+        _sendToPinnTriggered.value = true
+        setLoading(true)
+
+        val geometryFile = task.geometryFile?.let { File(it) } ?: return
+        val surfaceTempFile = task.surfaceTempFile?.let { File(it) } ?: return
+
+        viewModelScope.launch {
+            PinnApiClient.predictTask(
+                conductivity = task.conductivity,
+                radius = task.radius,
+                depth = task.depth,
+                geometryFile = geometryFile,
+                surfaceTempFile = surfaceTempFile
+            ) { response, error ->
+                if (error != null) {
+                    showSnackbarMessage(R.string.error_running_model)
+                    setLoading(false)
+                    _sendToPinnTriggered.value = false
+                } else if (response?.status == "success" && response.output != null) {
+                    _optimizedOutput.value = response.output
+                    setLoading(false)
+                    _sendToPinnTriggered.value = false
+                } else {
+                    showSnackbarMessage(R.string.error_running_model)
+                    setLoading(false)
+                    _sendToPinnTriggered.value = false
+                }
+            }
+        }
+    }
+
+    fun setLoading(loading: Boolean) {
+        _isLoading.value = loading
     }
 
     private fun showSnackbarMessage(message: Int) {

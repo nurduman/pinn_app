@@ -16,6 +16,7 @@
 
 package com.example.android.architecture.blueprints.todoapp.taskdetail
 
+import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,6 +26,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -38,10 +41,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.android.architecture.blueprints.todoapp.R
@@ -57,7 +62,6 @@ fun TaskDetailScreen(
     modifier: Modifier = Modifier,
     viewModel: TaskDetailViewModel = hiltViewModel(),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
-
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -77,6 +81,7 @@ fun TaskDetailScreen(
             task = uiState.task,
             onRefresh = viewModel::refresh,
             onTaskCheck = viewModel::setCompleted,
+            onSendToPinn = viewModel::sendToPinn,
             modifier = Modifier.padding(paddingValues)
         )
 
@@ -95,6 +100,18 @@ fun TaskDetailScreen(
                 onDeleteTask()
             }
         }
+
+        // Handle "Send to PINN" trigger (placeholder for now)
+        LaunchedEffect(uiState.sendToPinnTriggered) {
+            if (uiState.sendToPinnTriggered) {
+                // Simulate loading state for PINN processing
+                viewModel.setLoading(true)
+                // Future implementation: Call PinnApiClient here
+                // For now, reset after a delay (simulating API call)
+                // This will be replaced with actual API logic
+                // viewModel.setLoading(false) // Uncomment and adjust when adding API
+            }
+        }
     }
 }
 
@@ -105,6 +122,7 @@ private fun EditTaskContent(
     task: Task?,
     onTaskCheck: (Boolean) -> Unit,
     onRefresh: () -> Unit,
+    onSendToPinn: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val screenPadding = Modifier.padding(
@@ -127,17 +145,60 @@ private fun EditTaskContent(
         onRefresh = onRefresh
     ) {
         Column(commonModifier.verticalScroll(rememberScrollState())) {
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .then(screenPadding),
-
-            ) {
-                if (task != null) {
+            if (task != null) {
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .then(screenPadding),
+                ) {
                     Checkbox(task.isCompleted, onTaskCheck)
                     Column {
                         Text(text = task.title, style = MaterialTheme.typography.headlineSmall)
                         Text(text = task.description, style = MaterialTheme.typography.bodySmall)
+                        Text(text = "Conductivity: ${task.conductivity}", style = MaterialTheme.typography.bodySmall)
+                        Text(text = "Radius: ${task.radius}", style = MaterialTheme.typography.bodySmall)
+                        Text(text = "Depth: ${task.depth}", style = MaterialTheme.typography.bodySmall)
+                        Text(text = "Geometry File: ${task.geometryFile?.let { Uri.parse(it).lastPathSegment } ?: "Not set"}", style = MaterialTheme.typography.bodySmall)
+                        Text(text = "Surface Temp File: ${task.surfaceTempFile?.let { Uri.parse(it).lastPathSegment } ?: "Not set"}", style = MaterialTheme.typography.bodySmall)
+                    }
+                }
+                // Placeholder "Send to PINN" button
+                Button(
+                    onClick = onSendToPinn,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp)
+                ) {
+                    Text("Send to PINN")
+                }
+
+                // Optimized fields (initially empty, to be updated by API)
+                Text(
+                    text = "Optimized Radius: N/A",
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(top = 16.dp)
+                )
+                Text(
+                    text = "Optimized Depth: N/A",
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+                Text(
+                    text = "Optimized Conductivity: N/A",
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+
+                // Loading indicator while PINN is running
+                if (loading) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        CircularProgressIndicator(modifier = Modifier.padding(end = 16.dp))
+                        Text(text = "Processing with PINN...", style = MaterialTheme.typography.bodyLarge)
                     }
                 }
             }
@@ -164,10 +225,10 @@ private fun EditTaskContentPreview() {
                 surfaceTempFile = "surface_temp_edit"
             ),
             onTaskCheck = { },
-            onRefresh = { }
+            onRefresh = { },
+            onSendToPinn = {}
         )
     }
-
 }
 
 @Preview
@@ -180,7 +241,7 @@ private fun EditTaskContentTaskCompletedPreview() {
             Task(
                 title = "Title",
                 description = "Description",
-                isCompleted = false,
+                isCompleted = true,
                 id = "ID",
                 conductivity = 3.0,
                 radius = 2.0,
@@ -189,7 +250,8 @@ private fun EditTaskContentTaskCompletedPreview() {
                 surfaceTempFile = "surface_temp_edit"
             ),
             onTaskCheck = { },
-            onRefresh = { }
+            onRefresh = { },
+            onSendToPinn = {}
         )
     }
 }
@@ -213,7 +275,33 @@ private fun EditTaskContentEmptyPreview() {
                 surfaceTempFile = "surface"
             ),
             onTaskCheck = { },
-            onRefresh = { }
+            onRefresh = { },
+            onSendToPinn = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun EditTaskContentLoadingPreview() {
+    Surface {
+        EditTaskContent(
+            loading = true,
+            empty = false,
+            Task(
+                title = "Title",
+                description = "Description",
+                isCompleted = false,
+                id = "ID",
+                conductivity = 2.0,
+                radius = 2.0,
+                depth = 2.0,
+                geometryFile = "geometry_edit",
+                surfaceTempFile = "surface_temp_edit"
+            ),
+            onTaskCheck = { },
+            onRefresh = { },
+            onSendToPinn = {}
         )
     }
 }
