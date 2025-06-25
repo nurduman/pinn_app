@@ -169,7 +169,23 @@ private fun EditTaskContent(
                         .fillMaxWidth()
                         .padding(top = 16.dp)
                 ) {
-                    Text("Send to PINN")
+                    Text("Training")
+                }
+                Button(
+                    onClick = onSendToPinn,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp)
+                ) {
+                    Text("Training+Optimization")
+                }
+                Button(
+                    onClick = onSendToPinn,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp)
+                ) {
+                    Text("Optimization")
                 }
 
                 // Optimized fields (initially empty, to be updated by API)

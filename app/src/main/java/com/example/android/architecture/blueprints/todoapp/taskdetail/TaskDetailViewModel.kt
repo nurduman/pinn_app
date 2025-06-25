@@ -162,7 +162,7 @@ class TaskDetailViewModel @Inject constructor(
                     setLoading(false)
                     _sendToPinnTriggered.value = false
                 } else {
-                    showSnackbarMessage(R.string.error_running_model)
+                    showSnackbarMessage(R.string.error_running_model_2)
                     setLoading(false)
                     _sendToPinnTriggered.value = false
                 }
